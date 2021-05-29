@@ -2,6 +2,9 @@ use js_sys::{ArrayBuffer, JsString, Number, Object, Uint8Array};
 use serde::{de, serde_if_integer128};
 use wasm_bindgen::{JsCast, JsValue};
 
+use alloc::format;
+use alloc::vec::Vec;
+
 use super::{static_str_to_js, Error, Result};
 
 /// Provides [`de::SeqAccess`] from any JS iterator.

@@ -1,11 +1,15 @@
 use wasm_bindgen::prelude::*;
 
+use alloc::string::String;
+use crate::alloc::string::ToString;
+
 /// A newtype that represents Serde errors as JavaScript exceptions.
 #[derive(Debug)]
 pub struct Error(JsValue);
 
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+
+impl core::fmt::Display for Error {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         #[wasm_bindgen]
         extern "C" {
             #[wasm_bindgen(js_name = String)]
@@ -16,23 +20,24 @@ impl std::fmt::Display for Error {
     }
 }
 
-impl std::error::Error for Error {}
+//impl std::error::Error for Error {}
+
 
 impl Error {
     /// Creates a JavaScript `Error` with a given message.
-    pub fn new<T: std::fmt::Display>(msg: T) -> Self {
+    pub fn new<T: core::fmt::Display>(msg: T) -> Self {
         Error(js_sys::Error::new(&msg.to_string()).into())
     }
 }
 
 impl serde::ser::Error for Error {
-    fn custom<T: std::fmt::Display>(msg: T) -> Self {
+    fn custom<T: core::fmt::Display>(msg: T) -> Self {
         Error::new(msg)
     }
 }
 
 impl serde::de::Error for Error {
-    fn custom<T: std::fmt::Display>(msg: T) -> Self {
+    fn custom<T: core::fmt::Display>(msg: T) -> Self {
         Error::new(msg)
     }
 }
